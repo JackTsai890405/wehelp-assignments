@@ -17,8 +17,8 @@ CREATE TABLE `member`(
 );
 
 SET SQL_SAFE_UPDATES = 0;
-
-INSERT INTO `member`(`name`, `username`, `password`) VALUES ("test1234", "test1234", "test1234");
+DELETE FROM `member` WHERE `name` = "test";
+INSERT INTO `member`(`name`, `username`, `password`) VALUES ("test", "test", "test");
 -- 使用 SELECT 指令取得所有在 member 資料表中的會員資料
 SELECT * FROM `member`;
 -- 使用 SELECT 指令取得所有在 member 資料表中的會員資料，並按照 time 欄位，由近到遠排序
