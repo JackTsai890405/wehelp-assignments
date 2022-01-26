@@ -14,17 +14,17 @@
 * UPDATE `member` SET `name` = "test2" WHERE `username` = "test";
 
 ### 要求四
-SELECT COUNT(*) FROM `member`;
+* SELECT COUNT(*) FROM `member`;
 ![]()
-SELECT SUM(`follower_count`) FROM `member`;
+* SELECT SUM(`follower_count`) FROM `member`;
 ![]()
-SELECT AVG(`follower_count`) FROM `member`;
+* SELECT AVG(`follower_count`) FROM `member`;
 ![]()
 
 ### 要求五
-SELECT `member`.`name`, `message`.`content` FROM `member` JOIN `message` ON `member`.`id` = `message`.`member_id`;
+* SELECT `member`.`name`, `message`.`content` FROM `member` JOIN `message` ON `member`.`id` = `message`.`member_id`;
 ![]()
-SELECT `member`.`name`, `message`.`content` FROM `member` 
+* SELECT `member`.`name`, `message`.`content` FROM `member` 
 JOIN `message` ON `member`.`id` = `message`.`member_id`
 WHERE `member`.`username` = "test";
 ![]()
