@@ -1,58 +1,83 @@
-DROP DATABASE `website`;
+-- MySQL dump 10.13  Distrib 8.0.27, for macos11 (arm64)
+--
+-- Host: localhost    Database: website
+-- ------------------------------------------------------
+-- Server version	8.0.27
 
-CREATE DATABASE `website`;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-USE `website`;
+--
+-- Table structure for table `member`
+--
 
-DESCRIBE `member`;
+DROP TABLE IF EXISTS `member`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `member` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `follower_count` int NOT NULL DEFAULT '0',
+  `time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE TABLE `member`(
-	`id` BIGINT NOT NULL AUTO_INCREMENT, 
-	`name` VARCHAR(255) NOT NULL,
-    `username` VARCHAR(255) NOT NULL,
-    `password` VARCHAR(255) NOT NULL,
-    `follower_count` INT NOT NULL DEFAULT 0,
-    `time` DATETIME NOT NULL DEFAULT NOW(),
-    PRIMARY KEY (`id`)
-);
+--
+-- Dumping data for table `member`
+--
 
-SET SQL_SAFE_UPDATES = 0;
-DELETE FROM `member` WHERE `name` = "test";
-INSERT INTO `member`(`name`, `username`, `password`) VALUES ("test", "test", "test");
--- 使用 SELECT 指令取得所有在 member 資料表中的會員資料
-SELECT * FROM `member`;
--- 使用 SELECT 指令取得所有在 member 資料表中的會員資料，並按照 time 欄位，由近到遠排序
-SELECT * FROM `member` ORDER BY `time` DESC;
--- 使用 SELECT 指令取得 member 資料表中第 2 ~ 4 共三筆資料，並按照 time 欄位，由近到遠排序
-SELECT * FROM `member` ORDER BY `time` DESC LIMIT 1, 3;
--- 使用 SELECT 指令取得欄位 username 是 test 的會員資料
-SELECT * FROM `member` WHERE `username` = "test";
--- 使用 SELECT 指令取得欄位 username 是 test、且欄位 password 也是 test 的資料
-SELECT * FROM `member` WHERE `username` = "test" AND `password` = "test";
--- 使用 UPDATE 指令更新欄位 username 是 test 的會員資料，將資料中的 name 欄位改成 test2
-UPDATE `member` SET `name` = "test2" WHERE `username` = "test";
+LOCK TABLES `member` WRITE;
+/*!40000 ALTER TABLE `member` DISABLE KEYS */;
+INSERT INTO `member` VALUES (1,'test2','test','test',10,'2022-01-24 23:44:47'),(2,'test1','test1','test1',11,'2022-01-24 23:44:58'),(3,'test12','test12','test12',12,'2022-01-24 23:45:05'),(4,'test123','test123','test123',13,'2022-01-24 23:45:11'),(5,'test1234','test1234','test1234',14,'2022-01-24 23:45:22');
+/*!40000 ALTER TABLE `member` ENABLE KEYS */;
+UNLOCK TABLES;
 
--- 取得 member 資料表中，總共有幾筆資料（幾位會員）
-SELECT COUNT(*) FROM `member`;
--- 取得 member 資料表中，所有會員 follower_count 欄位的總和
-SELECT SUM(`follower_count`) FROM `member`;
--- 取得 member 資料表中，所有會員 follower_count 欄位的平均數
-SELECT AVG(`follower_count`) FROM `member`;
+--
+-- Table structure for table `message`
+--
 
--- 在資料庫中，建立新資料表，取名字為 message，資料表中必須包含以下欄位設定
-DESCRIBE `message`;
-SELECT * FROM `message`;
-CREATE TABLE `message`(
-	`id` BIGINT NOT NULL AUTO_INCREMENT, 
-	`member_id` BIGINT NOT NULL,
-    `content` VARCHAR(255) NOT NULL,
-    `time` DATETIME NOT NULL DEFAULT NOW(),
-    PRIMARY KEY (`id`),
-    FOREIGN KEY `message`(`member_id`) REFERENCES `member`(`id`)
-);
--- 取得所有留言，結果須包含留言者會員的姓名
-SELECT `member`.`name`, `message`.`content` FROM `member` JOIN `message` ON `member`.`id` = `message`.`member_id`;
--- 取得 member 資料表中欄位 username 是 test 的所有留言，資料中須包含留言者會員的姓名
-SELECT `member`.`name`, `message`.`content` FROM `member` 
-JOIN `message` ON `member`.`id` = `message`.`member_id`
-WHERE `member`.`username` = "test";
+DROP TABLE IF EXISTS `message`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `message` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `member_id` bigint NOT NULL,
+  `content` varchar(255) NOT NULL,
+  `time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `message` (`member_id`),
+  CONSTRAINT `message_ibfk_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `message`
+--
+
+LOCK TABLES `message` WRITE;
+/*!40000 ALTER TABLE `message` DISABLE KEYS */;
+INSERT INTO `message` VALUES (1,1,'留言','2022-01-25 20:01:57'),(2,1,'留言留言','2022-01-25 20:02:18'),(3,1,'留言留言留言','2022-01-25 20:02:21'),(4,2,'留言！','2022-01-25 20:02:59'),(5,2,'留言！留言！','2022-01-25 20:03:03'),(6,2,'留言！留言！留言！','2022-01-25 20:03:06'),(7,3,'留言～','2022-01-25 20:03:24'),(8,3,'留言～留言～','2022-01-25 20:03:26'),(9,3,'留言～留言～留言～','2022-01-25 20:03:29'),(10,4,'留言。','2022-01-25 20:03:59'),(11,4,'留言。留言。','2022-01-25 20:04:03'),(12,4,'留言。留言。留言。','2022-01-25 20:04:06'),(13,5,'OX','2022-01-25 20:04:21'),(14,5,'OXOX','2022-01-25 20:04:25'),(15,5,'OXOXOX','2022-01-25 20:04:29');
+/*!40000 ALTER TABLE `message` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2022-01-26 14:14:22
