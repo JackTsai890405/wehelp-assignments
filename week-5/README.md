@@ -15,16 +15,16 @@
 
 ### 要求四
 * SELECT COUNT(*) FROM `member`;
-![]()
+![](https://raw.githubusercontent.com/JackTsai890405/wehelp-assignments/master/week-5/q4_images/count_member.jpg)
 * SELECT SUM(`follower_count`) FROM `member`;
-![]()
+![](https://raw.githubusercontent.com/JackTsai890405/wehelp-assignments/master/week-5/q4_images/sum_member.jpg)
 * SELECT AVG(`follower_count`) FROM `member`;
-![]()
+![](https://raw.githubusercontent.com/JackTsai890405/wehelp-assignments/master/week-5/q4_images/average_member.jpg)
 
 ### 要求五
 * SELECT `member`.`name`, `message`.`content` FROM `member` JOIN `message` ON `member`.`id` = `message`.`member_id`;
-![]()
+![](https://raw.githubusercontent.com/JackTsai890405/wehelp-assignments/master/week-5/q5_images/get_all_content.jpg)
 * SELECT `member`.`name`, `message`.`content` FROM `member` 
 JOIN `message` ON `member`.`id` = `message`.`member_id`
 WHERE `member`.`username` = "test";
-![]()
+![](https://raw.githubusercontent.com/JackTsai890405/wehelp-assignments/master/week-5/q5_images/get_username_is_test_content.jpg)
