@@ -1,14 +1,34 @@
-import code
-from crypt import methods
-from unicodedata import name
 from flask import *
 import mysql.connector
+from mysql.connector import Error
+from mysql.connector import pooling
+from mysql.connector import connect
 
 admin_signin = Blueprint(
     "admin_signin", 
     __name__, 
     template_folder="templates/admin"
 )
+
+dbconfig = {
+    "host": "localhost", 
+    "port": "3306", 
+    "user": "root", 
+    "password": "root1234", 
+    "database": "L1_W6"
+}
+
+def create_connection_pool():
+    cnxpool = mysql.connector.pooling.MySQLConnectionPool(
+        pool_name = "mysqlpool2",
+        pool_size = 20,
+        pool_reset_session= True,
+        autocommit = True, 
+        **dbconfig
+    )
+
+    return cnxpool
+
 
 # /member ( 登入成功 )
 @admin_signin.route("/member", methods=["GET"])
@@ -26,14 +46,10 @@ def error():
 # /signin ( 處理中 )
 @admin_signin.route('/signin', methods=["POST"])
 def signin():
-    connection = mysql.connector.connect(
-        host = "localhost", 
-        port = "3306", 
-        user = "root", 
-        password = "root1234", 
-        database = "L1_W6"
-    )
+    cnx = create_connection_pool()
+    connection = cnx.get_connection()
     cursor = connection.cursor()
+
     username = request.form["username"]
     password = request.form["password"]
 
@@ -53,7 +69,12 @@ def signin():
 
         cursor.close()
         connection.close()
+
         return redirect(url_for("admin_signin.member"))
 
     elif len(records) == 0: # 帳號或密碼輸入錯誤
+
+        cursor.close()
+        connection.close()
+
         return redirect("/error?errorMessage=帳號或密碼輸入錯誤")

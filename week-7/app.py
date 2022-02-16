@@ -8,8 +8,6 @@ from admin.api import admin_api
 
 app = Flask(
     __name__,
-    # static_folder = "/static/images",
-    # static_url_path = "/static/images"
     static_folder = "static",
     static_url_path = "/"
 )
@@ -17,9 +15,6 @@ app = Flask(
 app.secret_key = "any string but secret"
 
 # 註冊 Flask Blueprints
-# app.register_blueprint(admin_signin, url_prefix = "/signin")
-# app.register_blueprint(admin_signup, url_prefix = "/signup")
-# app.register_blueprint(admin_signout, url_prefix = "/signout")
 app.register_blueprint(admin_signin)
 app.register_blueprint(admin_signup)
 app.register_blueprint(admin_signout)

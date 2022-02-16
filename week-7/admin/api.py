@@ -1,6 +1,5 @@
 from flask import *
 import mysql.connector
-from numpy import record
 
 admin_api = Blueprint (
     "admin_api", 
@@ -8,17 +7,32 @@ admin_api = Blueprint (
     template_folder = "/templates/admin"
 )
 
+
+dbconfig = {
+    "host": "localhost", 
+    "port": "3306", 
+    "user": "root", 
+    "password": "root1234", 
+    "database": "L1_W6"
+}
+
+def create_connection_pool():
+    cnxpool = mysql.connector.pooling.MySQLConnectionPool(
+        pool_name = "mysqlpool2",
+        pool_size = 20,
+        pool_reset_session= True,
+        autocommit = True, 
+        **dbconfig
+    )
+
+    return cnxpool
+
 @admin_api.route("/members", methods=["GET"])
 def queryMember(): 
     username = request.args.get("username", "")
     
-    connection = mysql.connector.connect(
-        host = "localhost", 
-        port = "3306", 
-        user = "root", 
-        password = "root1234", 
-        database = "L1_W6"
-    )
+    cnx = create_connection_pool()
+    connection = cnx.get_connection()
     cursor = connection.cursor()
 
     # 查詢會員資料
@@ -46,27 +60,26 @@ def queryMember():
 
 @admin_api.route("/member", methods=["POST"])
 def updateMember(): 
-    username = request.get_json()
-    print(username["name"])
+    if "username" in session: 
+        username = request.get_json()
 
-    connection = mysql.connector.connect(
-        host = "localhost", 
-        port = "3306", 
-        user = "root", 
-        password = "root1234", 
-        database = "L1_W6"
-    )
-    cursor = connection.cursor()
+        cnx = create_connection_pool()
+        connection = cnx.get_connection()
+        cursor = connection.cursor()
 
-    # 查詢會員資料
-    update_member = ("UPDATE `member` "
-                    "SET `name` = %s "
-                    "WHERE `username` = %s")
-    update_data = (username["name"], session["username"])
-    cursor.execute(update_member, update_data)
+        # 查詢會員資料
+        update_member = ("UPDATE `member` "
+                        "SET `name` = %s "
+                        "WHERE `username` = %s")
+        update_data = (username["name"], session["username"])
+        cursor.execute(update_member, update_data)
 
-    connection.commit()
-    # 成功
-    return jsonify({"ok": True})
-    # 失敗
-    return jsonify({"error": True})
+        connection.commit()
+
+        cursor.close()
+        connection.close()
+        # 成功
+        return jsonify({"ok": True})
+    else: 
+        # 失敗
+        return jsonify({"error": True})
