@@ -11,13 +11,10 @@ dbconfig = {
     "database": "L1_W6"
 }
 
-def create_connection_pool():
-    cnxpool = mysql.connector.pooling.MySQLConnectionPool(
-        pool_name = "mysqlpool2",
-        pool_size = 20,
-        pool_reset_session= True,
-        autocommit = True, 
-        **dbconfig
-    )
-
-    return cnxpool
+cnxpool = mysql.connector.pooling.MySQLConnectionPool(
+    pool_name = "mysqlpool2",
+    pool_size = 20,
+    pool_reset_session= True,
+    autocommit = True, 
+    **dbconfig
+)

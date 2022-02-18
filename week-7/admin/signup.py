@@ -4,6 +4,8 @@ from mysql.connector import Error
 from mysql.connector import pooling
 from mysql.connector import connect
 
+import connection.dbconfig as t
+
 admin_signup = Blueprint(
     "admin_signup", 
     __name__, 
@@ -38,9 +40,9 @@ def error():
 # /signup ( 處理中 )
 @admin_signup.route('/signup', methods=["POST"])
 def signup():
-    cnx = create_connection_pool()
+    # cnx = create_connection_pool()
 
-    connection = cnx.get_connection()
+    connection = t.cnxpool.get_connection()
 
     cursor = connection.cursor()
 

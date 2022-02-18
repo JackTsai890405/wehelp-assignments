@@ -1,6 +1,8 @@
 from flask import *
 import mysql.connector
 
+import connection.dbconfig as t
+
 admin_api = Blueprint (
     "admin_api", 
     __name__, 
@@ -31,8 +33,8 @@ def create_connection_pool():
 def queryMember(): 
     username = request.args.get("username", "")
     
-    cnx = create_connection_pool()
-    connection = cnx.get_connection()
+    # cnx = create_connection_pool()
+    connection = t.cnxpool.get_connection()
     cursor = connection.cursor()
 
     # 查詢會員資料
@@ -63,8 +65,8 @@ def updateMember():
     if "username" in session: 
         username = request.get_json()
 
-        cnx = create_connection_pool()
-        connection = cnx.get_connection()
+        # cnx = create_connection_pool()
+        connection = t.cnxpool.get_connection()
         cursor = connection.cursor()
 
         # 查詢會員資料

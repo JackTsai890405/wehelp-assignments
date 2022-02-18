@@ -21,7 +21,7 @@ app.register_blueprint(admin_signout)
 app.register_blueprint(admin_api, url_prefix = "/api")
 
 @app.route("/")
-def index(): 
+def index():
     return render_template("index.html")
 
 if __name__ == "__main__": 
